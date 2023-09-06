@@ -17,7 +17,6 @@ def electrcial_grid_block_rule(block):
 
     # Define components
     block.power = Var(t, domain=NonNegativeReals)
-
     block.port_in = Port(initialize={'power': (block.power, Port.Extensive)})
 
 
@@ -37,8 +36,10 @@ def electrcial_grid_block_rule(block):
 
 
 def gas_grid_block_rule(block):
+    """Rule for creating a gas grid block with default components and constraints."""
+    # Get index from model
     t = block.model().t
 
+    # Define components
     block.gas = Var(t, domain=NonNegativeReals)
-
     block.port_out = Port(initialize={'gas': (block.gas, Port.Extensive)})

@@ -12,7 +12,7 @@ PATH_PRICES = 'data/prices/'
 PATH_OUT = 'data/output/'
 
 opt = SolverFactory('gurobi')
-opt.options['nonconvex'] = 2
+# opt.options['nonconvex'] = 2
 
 
 data = DataPortal()

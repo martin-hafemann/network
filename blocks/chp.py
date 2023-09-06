@@ -78,5 +78,3 @@ def cgu_block_rule(block):
         t,
         rule = heat_depends_on_power_rule
         )
-
-
