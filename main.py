@@ -64,6 +64,7 @@ instance.arc2 = Arc(source=instance.chp2.port_out, destination=instance.power_gr
 instance.arc3 = Arc(source=instance.chp1.port_in, destination=instance.gas_grid.port_out)
 instance.arc4 = Arc(source=instance.chp2.port_in, destination=instance.gas_grid.port_out)
 
+# Expand arcs and generate connection constraints
 TransformationFactory('network.expand_arcs').apply_to(instance)
 
 # Solve the optimization problem
