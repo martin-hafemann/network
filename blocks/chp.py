@@ -5,7 +5,7 @@ from pyomo.network import *
 
 # Get input parameters for the cgu
 data = pd.read_csv(
-    'data/assets/cgu.csv',
+    'data/assets/chp.csv',
     index_col=0
 )
 
@@ -34,7 +34,7 @@ def cgu_block_rule(block):
         """Rule for the minimal power."""
         return data.loc['Min', 'Power'] * _block.bin[i] <= _block.power[i]
     
-
+    
     def gas_depends_on_power_rule(_block, i):
         """Rule for the dependencies between gas demand and power output."""
         gas_max = data.loc['Max', 'Gas']

@@ -4,8 +4,8 @@ from pyomo.environ import *
 from pyomo.network import *
 from pyomo.opt import SolverFactory
 
-import blocks.cgu as cgu
-import blocks.net as net
+import blocks.chp as chp
+import blocks.grid as grid
 
 
 PATH_PRICES = 'data/prices/'
@@ -38,16 +38,16 @@ m.gas_price = Param(m.t)
 m.power_price = Param(m.t)
 
 # Define assets from blocks
-m.cgu1 = Block(rule=cgu.cgu_block_rule)
-m.cgu2 = Block(rule=cgu.cgu_block_rule)
-m.power_net = Block(rule=net.electrcial_net_block_rule)
-m.gas_net = Block(rule=net.gas_net_block_rule)
+m.chp1 = Block(rule=chp.cgu_block_rule)
+m.chp2 = Block(rule=chp.cgu_block_rule)
+m.power_grid = Block(rule=grid.electrcial_grid_block_rule)
+m.gas_grid = Block(rule=grid.gas_grid_block_rule)
 
 
 def obj_expression(m):
     """ Objective Function """
-    return (quicksum(m.gas_net.gas[t] * m.gas_price[t] for t in m.t) -
-            quicksum(m.power_net.power[t] * m.power_price[t] for t in m.t))
+    return (quicksum(m.gas_grid.gas[t] * m.gas_price[t] for t in m.t) -
+            quicksum(m.power_grid.power[t] * m.power_price[t] for t in m.t))
 
 
 m.obj = Objective(
@@ -59,10 +59,10 @@ m.obj = Objective(
 instance = m.create_instance(data)
 
 # Define arcs
-instance.arc1 = Arc(source=instance.cgu1.port_out, destination=instance.power_net.port_in)
-instance.arc2 = Arc(source=instance.cgu2.port_out, destination=instance.power_net.port_in)
-instance.arc3 = Arc(source=instance.cgu1.port_in, destination=instance.gas_net.port_out)
-instance.arc4 = Arc(source=instance.cgu2.port_in, destination=instance.gas_net.port_out)
+instance.arc1 = Arc(source=instance.chp1.port_out, destination=instance.power_grid.port_in)
+instance.arc2 = Arc(source=instance.chp2.port_out, destination=instance.power_grid.port_in)
+instance.arc3 = Arc(source=instance.chp1.port_in, destination=instance.gas_grid.port_out)
+instance.arc4 = Arc(source=instance.chp2.port_in, destination=instance.gas_grid.port_out)
 
 TransformationFactory('network.expand_arcs').apply_to(instance)
 

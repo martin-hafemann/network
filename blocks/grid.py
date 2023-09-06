@@ -4,13 +4,13 @@ from pyomo.network import *
 
 # Get input parameters for the electrical net
 data = pd.read_csv(
-    'data/assets/electrical_net.csv',
+    'data/assets/electrical_grid.csv',
     index_col=0
 )
 
 
-def electrcial_net_block_rule(block):
-    """Rule for creating a electrical net block with default components and 
+def electrcial_grid_block_rule(block):
+    """Rule for creating a electrical power grid block with default components and 
     constraints."""
     # Get index from model
     t = block.model().t
@@ -36,7 +36,7 @@ def electrcial_net_block_rule(block):
     
 
 
-def gas_net_block_rule(block):
+def gas_grid_block_rule(block):
     t = block.model().t
 
     block.gas = Var(t, domain=NonNegativeReals)
